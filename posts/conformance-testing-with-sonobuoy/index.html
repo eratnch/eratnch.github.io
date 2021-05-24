@@ -11,7 +11,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta
   name="description"
-  content="Conformance Testing Kubernetes Clusters Validate k8s cluster with sonobuoy Create a Kind cluster with multiple nodes ~/conformance_test$ cat kind_config.yaml kind: Cluster apiVersion: kind.x-k8s.io/v1alpha4 # One control plane node and three &amp;quot;workers&amp;quot;. # # While these will not add more real compute capacity and # have limited isolation, this can be useful for testing # rolling updates etc. # # The API-server and other control plane components will be # on the control-plane node."
+  content="Conformance Testing Kubernetes Clusters Validate k8s cluster with sonobuoy Create a Kind cluster with multiple nodes ~/conformance_test$ cat kind_config.yaml kind: Cluster apiVersion: kind.x-k8s.io/v1alpha4 nodes: - role: control-plane - role: worker - role: worker - role: worker kind create cluster --name conformance --config conformance_test/kind_config.yaml Creating cluster &amp;#34;conformance&amp;#34; ... ✓ Ensuring node image (kindest/node:v1.19.1) 🖼 ✓ Preparing nodes 📦 📦 📦 📦 ✓ Writing configuration 📜 ✓ Starting control-plane 🕹️ ✓ Installing CNI 🔌 ✓ Installing StorageClass 💾 ✓ Joining worker nodes 🚜 Set kubectl context to &amp;#34;kind-conformance&amp;#34; You can now use your cluster with: kubectl cluster-info --context kind-conformance Not sure what to do next?"
 />
 <meta
   name="keywords"
@@ -47,12 +47,12 @@
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Conformance Testing With Sonobuoy"/>
-<meta name="twitter:description" content="Conformance Testing Kubernetes Clusters Validate k8s cluster with sonobuoy Create a Kind cluster with multiple nodes ~/conformance_test$ cat kind_config.yaml kind: Cluster apiVersion: kind.x-k8s.io/v1alpha4 # One control plane node and three &quot;workers&quot;. # # While these will not add more real compute capacity and # have limited isolation, this can be useful for testing # rolling updates etc. # # The API-server and other control plane components will be # on the control-plane node."/>
+<meta name="twitter:description" content="Conformance Testing Kubernetes Clusters Validate k8s cluster with sonobuoy Create a Kind cluster with multiple nodes ~/conformance_test$ cat kind_config.yaml kind: Cluster apiVersion: kind.x-k8s.io/v1alpha4 nodes: - role: control-plane - role: worker - role: worker - role: worker kind create cluster --name conformance --config conformance_test/kind_config.yaml Creating cluster &#34;conformance&#34; ... ✓ Ensuring node image (kindest/node:v1.19.1) 🖼 ✓ Preparing nodes 📦 📦 📦 📦 ✓ Writing configuration 📜 ✓ Starting control-plane 🕹️ ✓ Installing CNI 🔌 ✓ Installing StorageClass 💾 ✓ Joining worker nodes 🚜 Set kubectl context to &#34;kind-conformance&#34; You can now use your cluster with: kubectl cluster-info --context kind-conformance Not sure what to do next?"/>
 
 
 
 <meta property="og:title" content="Conformance Testing With Sonobuoy" />
-<meta property="og:description" content="Conformance Testing Kubernetes Clusters Validate k8s cluster with sonobuoy Create a Kind cluster with multiple nodes ~/conformance_test$ cat kind_config.yaml kind: Cluster apiVersion: kind.x-k8s.io/v1alpha4 # One control plane node and three &quot;workers&quot;. # # While these will not add more real compute capacity and # have limited isolation, this can be useful for testing # rolling updates etc. # # The API-server and other control plane components will be # on the control-plane node." />
+<meta property="og:description" content="Conformance Testing Kubernetes Clusters Validate k8s cluster with sonobuoy Create a Kind cluster with multiple nodes ~/conformance_test$ cat kind_config.yaml kind: Cluster apiVersion: kind.x-k8s.io/v1alpha4 nodes: - role: control-plane - role: worker - role: worker - role: worker kind create cluster --name conformance --config conformance_test/kind_config.yaml Creating cluster &#34;conformance&#34; ... ✓ Ensuring node image (kindest/node:v1.19.1) 🖼 ✓ Preparing nodes 📦 📦 📦 📦 ✓ Writing configuration 📜 ✓ Starting control-plane 🕹️ ✓ Installing CNI 🔌 ✓ Installing StorageClass 💾 ✓ Joining worker nodes 🚜 Set kubectl context to &#34;kind-conformance&#34; You can now use your cluster with: kubectl cluster-info --context kind-conformance Not sure what to do next?" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://eratnch.github.io/posts/conformance-testing-with-sonobuoy/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2021-05-23T23:49:19-04:00" />
@@ -183,26 +183,31 @@
       <h1 id="conformance-testing-kubernetes-clusters">Conformance Testing Kubernetes Clusters</h1>
 <h2 id="validate-k8s-cluster-with-sonobuoy">Validate k8s cluster with sonobuoy</h2>
 <h3 id="create-a-kind-cluster-with-multiple-nodes">Create a Kind cluster with multiple nodes</h3>
-<pre><code>~/conformance_test$ cat kind_config.yaml
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">~/conformance_test$ cat kind_config.yaml
 
 kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
-# One control plane node and three &quot;workers&quot;.
-#
-# While these will not add more real compute capacity and
-# have limited isolation, this can be useful for testing
-# rolling updates etc.
-#
-# The API-server and other control plane components will be
-# on the control-plane node.
-#
-# You probably don't need this unless you are testing Kubernetes itself.
 nodes:
 - role: control-plane
 - role: worker
 - role: worker
 - role: worker
-</code></pre>
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">kind create cluster --name conformance --config conformance_test/kind_config.yaml
+Creating cluster <span style="color:#e6db74">&#34;conformance&#34;</span> ...
+✓ Ensuring node image <span style="color:#f92672">(</span>kindest/node:v1.19.1<span style="color:#f92672">)</span> 🖼
+✓ Preparing nodes 📦 📦 📦 📦
+✓ Writing configuration 📜
+✓ Starting control-plane 🕹️
+✓ Installing CNI 🔌
+✓ Installing StorageClass 💾
+✓ Joining worker nodes 🚜
+Set kubectl context to <span style="color:#e6db74">&#34;kind-conformance&#34;</span>
+You can now use your cluster with:
+
+kubectl cluster-info --context kind-conformance
+
+Not sure what to <span style="color:#66d9ef">do</span> next? 😅  Check out https://kind.sigs.k8s.io/docs/user/quick-start/
+</code></pre></div>
     </div>
     
       

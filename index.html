@@ -186,7 +186,7 @@
       <div class="post-content">
         
           
-            Conformance Testing Kubernetes Clusters Validate k8s cluster with sonobuoy Create a Kind cluster with multiple nodes ~/conformance_test$ cat kind_config.yaml kind: Cluster apiVersion: kind.x-k8s.io/v1alpha4 # One control plane node and three &quot;workers&quot;. # # While these will not add more real compute capacity and # have limited isolation, this can be useful for testing # rolling updates etc. # # The API-server and other control plane components will be # on the control-plane node.
+            Conformance Testing Kubernetes Clusters Validate k8s cluster with sonobuoy Create a Kind cluster with multiple nodes ~/conformance_test$ cat kind_config.yaml kind: Cluster apiVersion: kind.x-k8s.io/v1alpha4 nodes: - role: control-plane - role: worker - role: worker - role: worker kind create cluster --name conformance --config conformance_test/kind_config.yaml Creating cluster &#34;conformance&#34; ... ✓ Ensuring node image (kindest/node:v1.19.1) 🖼 ✓ Preparing nodes 📦 📦 📦 📦 ✓ Writing configuration 📜 ✓ Starting control-plane 🕹️ ✓ Installing CNI 🔌 ✓ Installing StorageClass 💾 ✓ Joining worker nodes 🚜 Set kubectl context to &#34;kind-conformance&#34; You can now use your cluster with: kubectl cluster-info --context kind-conformance Not sure what to do next?
           
         
       </div>
