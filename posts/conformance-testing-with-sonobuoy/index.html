@@ -11,7 +11,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta
   name="description"
-  content="Conformance Testing Kubernetes Clusters Validate k8s cluster with sonobuoy Create a Kind cluster with multiple nodes ~/conformance_test$ cat kind_config.yaml kind: Cluster apiVersion: kind.x-k8s.io/v1alpha4 nodes: - role: control-plane - role: worker - role: worker - role: worker kind create cluster --name conformance --config conformance_test/kind_config.yaml Creating cluster &amp;#34;conformance&amp;#34; ... ✓ Ensuring node image (kindest/node:v1.19.1) 🖼 ✓ Preparing nodes 📦 📦 📦 📦 ✓ Writing configuration 📜 ✓ Starting control-plane 🕹️ ✓ Installing CNI 🔌 ✓ Installing StorageClass 💾 ✓ Joining worker nodes 🚜 Set kubectl context to &amp;#34;kind-conformance&amp;#34; You can now use your cluster with: kubectl cluster-info --context kind-conformance Not sure what to do next?"
+  content="Conformance Testing Kubernetes Clusters Kubernetes has seen exponential growth and wide-scale adoption in the cloud computing and container orchestration land since last several years. It has become the defacto tool for deploying and maintaining large scale workloads in production environments across platforms. There are currently over 90 certified kubernetes platforms and distributions available in the market.
+In order to standardize the certification process of kubernetes distributions, the Kubernetes Community and Cloud Native Computing Foundation(CNCF) run a Kubernetes Conformance Certification program."
 />
 <meta
   name="keywords"
@@ -47,12 +48,14 @@
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Conformance Testing With Sonobuoy"/>
-<meta name="twitter:description" content="Conformance Testing Kubernetes Clusters Validate k8s cluster with sonobuoy Create a Kind cluster with multiple nodes ~/conformance_test$ cat kind_config.yaml kind: Cluster apiVersion: kind.x-k8s.io/v1alpha4 nodes: - role: control-plane - role: worker - role: worker - role: worker kind create cluster --name conformance --config conformance_test/kind_config.yaml Creating cluster &#34;conformance&#34; ... ✓ Ensuring node image (kindest/node:v1.19.1) 🖼 ✓ Preparing nodes 📦 📦 📦 📦 ✓ Writing configuration 📜 ✓ Starting control-plane 🕹️ ✓ Installing CNI 🔌 ✓ Installing StorageClass 💾 ✓ Joining worker nodes 🚜 Set kubectl context to &#34;kind-conformance&#34; You can now use your cluster with: kubectl cluster-info --context kind-conformance Not sure what to do next?"/>
+<meta name="twitter:description" content="Conformance Testing Kubernetes Clusters Kubernetes has seen exponential growth and wide-scale adoption in the cloud computing and container orchestration land since last several years. It has become the defacto tool for deploying and maintaining large scale workloads in production environments across platforms. There are currently over 90 certified kubernetes platforms and distributions available in the market.
+In order to standardize the certification process of kubernetes distributions, the Kubernetes Community and Cloud Native Computing Foundation(CNCF) run a Kubernetes Conformance Certification program."/>
 
 
 
 <meta property="og:title" content="Conformance Testing With Sonobuoy" />
-<meta property="og:description" content="Conformance Testing Kubernetes Clusters Validate k8s cluster with sonobuoy Create a Kind cluster with multiple nodes ~/conformance_test$ cat kind_config.yaml kind: Cluster apiVersion: kind.x-k8s.io/v1alpha4 nodes: - role: control-plane - role: worker - role: worker - role: worker kind create cluster --name conformance --config conformance_test/kind_config.yaml Creating cluster &#34;conformance&#34; ... ✓ Ensuring node image (kindest/node:v1.19.1) 🖼 ✓ Preparing nodes 📦 📦 📦 📦 ✓ Writing configuration 📜 ✓ Starting control-plane 🕹️ ✓ Installing CNI 🔌 ✓ Installing StorageClass 💾 ✓ Joining worker nodes 🚜 Set kubectl context to &#34;kind-conformance&#34; You can now use your cluster with: kubectl cluster-info --context kind-conformance Not sure what to do next?" />
+<meta property="og:description" content="Conformance Testing Kubernetes Clusters Kubernetes has seen exponential growth and wide-scale adoption in the cloud computing and container orchestration land since last several years. It has become the defacto tool for deploying and maintaining large scale workloads in production environments across platforms. There are currently over 90 certified kubernetes platforms and distributions available in the market.
+In order to standardize the certification process of kubernetes distributions, the Kubernetes Community and Cloud Native Computing Foundation(CNCF) run a Kubernetes Conformance Certification program." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://eratnch.github.io/posts/conformance-testing-with-sonobuoy/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2021-05-23T23:49:19-04:00" />
@@ -169,7 +172,7 @@
 
       
         <span class="post-read-time"
-          >— 1 min read</span
+          >— 3 min read</span
         >
       
     </div>
@@ -181,8 +184,29 @@
     <div class="post-content">
       
       <h1 id="conformance-testing-kubernetes-clusters">Conformance Testing Kubernetes Clusters</h1>
+<p>Kubernetes has seen exponential growth and wide-scale adoption in the cloud computing and container orchestration land since last several years. It has become the defacto tool for deploying and maintaining large scale workloads in production environments across platforms. There are currently over 90 certified kubernetes platforms and distributions available in the market.</p>
+<p>In order to standardize the certification process of kubernetes distributions, the Kubernetes Community and Cloud Native Computing Foundation(CNCF) run a Kubernetes Conformance Certification program. It requires each kubernetes distribution to successfully run targeted set of conformance test cases in order to achieve CNCF certification.</p>
+<h2 id="sonobuoy">Sonobuoy</h2>
+<p>The standard tool for running these tests is <a href="!https://github.com/vmware-tanzu/sonobuoy">Sonobuoy</a>. Sonobuoy is a diagnostic tool that can validate the state of a Kubernetes cluster by running set of plugins.</p>
+<h3 id="e2e-plugin">E2E Plugin</h3>
+<p>Kubernetes end-to-end testing plugin (the E2E plugin) is used to run tests maintained by upstream Kubernetes community.</p>
+<p>Following <code>modes</code> or run configurations are used commonly when running conformance tests</p>
+<ul>
+<li>quick
+This runs a single test from <code>e2e</code> test suite to validate cluster and sonobuoy configuration.</li>
+<li>non-disruptive-conformance
+This is the default mode. In this mode, it runs all <code>e2e</code> tests that are non-disruptive to the workloads in the cluster.</li>
+<li>certified-conformance
+This mode runs all <code>Conformance</code> tests as required for the Certified Kubernetes COnformance Program.</li>
+</ul>
+<p>Allright!
+Let&rsquo;s get hands on and see <code>Sonobuoy</code> in action.
+All the code is available on my <a href="https://github.com/eratnch/hello-sonobuoy">Github</a></p>
 <h2 id="validate-k8s-cluster-with-sonobuoy">Validate k8s cluster with sonobuoy</h2>
+<p>We are going to run the tests on a kubernetes cluster created by using <a href="https://kind.sigs.k8s.io/">Kind</a>.</p>
+<p>If you&rsquo;re new to <code>Kind</code>, it&rsquo;s a tool for running kubernetes clusters using Docker containers. It&rsquo;s one of the easiest ways to spin up a multinode kubernetes cluster in no time!</p>
 <h3 id="create-a-kind-cluster-with-multiple-nodes">Create a Kind cluster with multiple nodes</h3>
+<p>Create the <code>kind</code> configuration file to set up 1 control-plane and 3 worker nodes in the cluster.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">~/conformance_test$ cat kind_config.yaml
 
 kind: Cluster
@@ -207,6 +231,29 @@ You can now use your cluster with:
 kubectl cluster-info --context kind-conformance
 
 Not sure what to <span style="color:#66d9ef">do</span> next? 😅  Check out https://kind.sigs.k8s.io/docs/user/quick-start/
+</code></pre></div><p>Check that the kubernetes cluster is up and pods are in running state.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ kubectl get po -A
+NAMESPACE            NAME                                                READY   STATUS    RESTARTS   AGE
+kube-system          coredns-f9fd979d6-dp444                             1/1     Running   <span style="color:#ae81ff">0</span>          119s
+kube-system          coredns-f9fd979d6-pq9rr                             1/1     Running   <span style="color:#ae81ff">0</span>          119s
+kube-system          etcd-conformance-control-plane                      1/1     Running   <span style="color:#ae81ff">0</span>          2m9s
+kube-system          kindnet-b6mrv                                       1/1     Running   <span style="color:#ae81ff">0</span>          109s
+kube-system          kindnet-sg4rk                                       1/1     Running   <span style="color:#ae81ff">0</span>          119s
+kube-system          kindnet-zktrp                                       1/1     Running   <span style="color:#ae81ff">0</span>          110s
+kube-system          kindnet-zxg2r                                       1/1     Running   <span style="color:#ae81ff">0</span>          110s
+kube-system          kube-apiserver-conformance-control-plane            1/1     Running   <span style="color:#ae81ff">0</span>          2m9s
+kube-system          kube-controller-manager-conformance-control-plane   1/1     Running   <span style="color:#ae81ff">0</span>          2m9s
+kube-system          kube-proxy-4bghm                                    1/1     Running   <span style="color:#ae81ff">0</span>          110s
+kube-system          kube-proxy-76mpw                                    1/1     Running   <span style="color:#ae81ff">0</span>          109s
+kube-system          kube-proxy-lwgmg                                    1/1     Running   <span style="color:#ae81ff">0</span>          110s
+kube-system          kube-proxy-ndwks                                    1/1     Running   <span style="color:#ae81ff">0</span>          119s
+kube-system          kube-scheduler-conformance-control-plane            1/1     Running   <span style="color:#ae81ff">0</span>          2m9s
+local-path-storage   local-path-provisioner-78776bfc44-jzhws             1/1     Running   <span style="color:#ae81ff">0</span>          119s
+
+</code></pre></div><h2 id="versions">Versions</h2>
+<p>Kind</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">~$ kind version
+kind v0.9.0 go1.15.2 linux/amd64
 </code></pre></div>
     </div>
     
